@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @Column(name="flight_number",nullable = false)
     int number;

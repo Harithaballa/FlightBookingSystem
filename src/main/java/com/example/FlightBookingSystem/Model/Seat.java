@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @Column(nullable = false)
     SeatType type;

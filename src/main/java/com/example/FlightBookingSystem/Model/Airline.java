@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Airline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @Column(nullable = false)
     String name;

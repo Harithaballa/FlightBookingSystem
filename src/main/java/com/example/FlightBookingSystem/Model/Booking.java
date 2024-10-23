@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @OneToOne
     @JoinColumn(name="booked_by")

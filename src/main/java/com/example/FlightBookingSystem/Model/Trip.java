@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name="flight_id")
