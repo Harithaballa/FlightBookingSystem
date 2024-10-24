@@ -25,6 +25,10 @@ public class Airline {
         this.flights = flights;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
