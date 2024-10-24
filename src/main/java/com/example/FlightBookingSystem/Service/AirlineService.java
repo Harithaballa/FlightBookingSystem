@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 @Service
 public class AirlineService {
 
-    @Autowired
     AirlineRepository airlineRepository;
+
+    public AirlineService(AirlineRepository airlineRepository){
+        this.airlineRepository = airlineRepository;
+    }
 
     public void add(Airline airline) {
         airlineRepository.save(airline);
     }
 
-    public Optional<Airline> fetch(long id) throws Exception {
-        Optional<Airline> airline =  airlineRepository.findById(id);
-        if(airline==null)
-                throw new Exception("Not found");
-        return airline;
+    public Airline fetch(long id) throws Exception {
+        return airlineRepository.findById(id).orElseThrow(()->new Exception("not found"));
     }
 
     public List<AirlineNamesDto> fetchAllNames() {

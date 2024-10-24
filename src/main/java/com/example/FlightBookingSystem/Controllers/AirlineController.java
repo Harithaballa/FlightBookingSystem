@@ -2,7 +2,6 @@ package com.example.FlightBookingSystem.Controllers;
 
 import com.example.FlightBookingSystem.Dto.AirlineNamesDto;
 import com.example.FlightBookingSystem.Model.Airline;
-import com.example.FlightBookingSystem.Model.Flight;
 import com.example.FlightBookingSystem.Service.AirlineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,10 @@ import java.util.Optional;
 @RequestMapping("/airlines")
 public class AirlineController {
 
-    @Autowired
     AirlineService airlineService;
+    public AirlineController(AirlineService airlineService){
+        this.airlineService = airlineService;
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -27,7 +28,7 @@ public class AirlineController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Airline> fetch(@PathVariable @Valid long id) throws Exception {
+    public Airline fetch(@PathVariable @Valid long id) throws Exception {
         return airlineService.fetch(id);
     }
 

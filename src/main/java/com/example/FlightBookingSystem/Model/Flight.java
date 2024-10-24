@@ -33,6 +33,12 @@ public class Flight {
     public Flight() {
     }
 
+    public Flight(int number, List<Seat> seats, Airline airline) {
+        this.airline = airline;
+        this.number = number;
+        this.seats = seats;
+    }
+
     public int getNumber() {
         return number;
     }
