@@ -10,6 +10,9 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name="seat_number")
+    String number;
+
     @Column(nullable = false)
     SeatType type;
 
@@ -27,11 +30,20 @@ public class Seat {
     public Seat() {
     }
 
-    public Seat(SeatType type, SeatStatus status, Flight flight, Booking booking) {
+    public Seat(String number,SeatType type, SeatStatus status, Flight flight, Booking booking) {
+        this.number = number;
         this.type = type;
         this.status = status;
         this.flight = flight;
         this.booking = booking;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public SeatType getType() {

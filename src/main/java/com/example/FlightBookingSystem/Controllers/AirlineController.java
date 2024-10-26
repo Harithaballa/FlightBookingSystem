@@ -10,13 +10,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/airlines")
 public class AirlineController {
 
     AirlineService airlineService;
+
+    @Autowired
     public AirlineController(AirlineService airlineService){
         this.airlineService = airlineService;
     }
