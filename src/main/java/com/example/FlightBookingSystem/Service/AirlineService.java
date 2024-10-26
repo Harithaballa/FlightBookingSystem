@@ -17,6 +17,7 @@ public class AirlineService {
 
     AirlineRepository airlineRepository;
 
+    @Autowired
     public AirlineService(AirlineRepository airlineRepository){
         this.airlineRepository = airlineRepository;
     }

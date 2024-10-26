@@ -3,20 +3,21 @@ package com.example.FlightBookingSystem.Service;
 import com.example.FlightBookingSystem.Dto.CreateFlightDto;
 import com.example.FlightBookingSystem.Model.Airline;
 import com.example.FlightBookingSystem.Model.Flight;
-import com.example.FlightBookingSystem.Model.Trip;
 import com.example.FlightBookingSystem.Repository.FlightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class FlightService {
 
     FlightRepository flightRepository;
 
     AirlineService airlineService;
 
+    @Autowired
     public  FlightService(FlightRepository flightRepository,AirlineService airlineService){
         this.flightRepository = flightRepository;
         this.airlineService = airlineService;
