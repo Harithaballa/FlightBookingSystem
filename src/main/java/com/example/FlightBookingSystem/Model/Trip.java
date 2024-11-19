@@ -3,6 +3,7 @@ package com.example.FlightBookingSystem.Model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +28,9 @@ public class Trip {
     @Column(nullable = false)
     String destination;
 
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Seat> seats;
+
     public Trip() {
     }
 
@@ -36,6 +40,15 @@ public class Trip {
         this.departureTime = departureTime;
         this.source = source;
         this.destination = destination;
+    }
+
+    public Trip(Flight flight, LocalDateTime arrivalTime, LocalDateTime departureTime, String source, String destination, List<Seat> seats) {
+        this.flight = flight;
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+        this.source = source;
+        this.destination = destination;
+        this.seats = seats;
     }
 
     public Flight getFlight() {
@@ -78,16 +91,24 @@ public class Trip {
         this.destination = destination;
     }
 
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trip trip = (Trip) o;
-        return id == trip.id && Objects.equals(flight, trip.flight) && arrivalTime.equals(trip.arrivalTime) && departureTime.equals(trip.departureTime) && source.equals(trip.source) && destination.equals(trip.destination);
+        return Objects.equals(id, trip.id) && Objects.equals(flight, trip.flight) && arrivalTime.equals(trip.arrivalTime) && departureTime.equals(trip.departureTime) && source.equals(trip.source) && destination.equals(trip.destination) && Objects.equals(seats, trip.seats);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, flight, arrivalTime, departureTime, source, destination);
+        return Objects.hash(id, flight, arrivalTime, departureTime, source, destination, seats);
     }
 }

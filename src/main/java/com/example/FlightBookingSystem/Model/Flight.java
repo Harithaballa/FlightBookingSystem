@@ -13,9 +13,6 @@ public class Flight {
     @Column(name="flight_number",nullable = false)
     int number;
 
-    @OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Seat> seats;
-
     @ManyToOne
     @JoinColumn(name="airline_id")
     Airline airline;
@@ -23,9 +20,8 @@ public class Flight {
     @OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Trip> trips;
 
-    public Flight(int number, List<Seat> seats, Airline airline, List<Trip> trips) {
+    public Flight(int number,Airline airline, List<Trip> trips) {
         this.number = number;
-        this.seats = seats;
         this.airline = airline;
         this.trips = trips;
     }
@@ -36,7 +32,6 @@ public class Flight {
     public Flight(int number, List<Seat> seats, Airline airline) {
         this.airline = airline;
         this.number = number;
-        this.seats = seats;
     }
 
     public int getNumber() {
@@ -45,14 +40,6 @@ public class Flight {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
     }
 
     public Airline getAirline() {
@@ -76,11 +63,11 @@ public class Flight {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Flight flight = (Flight) o;
-        return id == flight.id && number == flight.number && Objects.equals(seats, flight.seats) && Objects.equals(airline, flight.airline) && Objects.equals(trips, flight.trips);
+        return id == flight.id && number == flight.number  && Objects.equals(airline, flight.airline) && Objects.equals(trips, flight.trips);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, seats, airline, trips);
+        return Objects.hash(id, number,airline, trips);
     }
 }

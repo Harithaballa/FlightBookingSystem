@@ -3,6 +3,7 @@ package com.example.FlightBookingSystem.Service;
 import com.example.FlightBookingSystem.Dto.CreateFlightDto;
 import com.example.FlightBookingSystem.Model.Airline;
 import com.example.FlightBookingSystem.Model.Flight;
+import com.example.FlightBookingSystem.Model.Trip;
 import com.example.FlightBookingSystem.Repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,10 @@ public class FlightService {
     public List<Flight> fetchAvailableByAirline(Date date, long airline_id) throws Exception {
         Airline airline = airlineService.fetch(airline_id);
         return  flightRepository.fetchAllAvailableByAirline(date,airline);
+    }
+
+    public void addTrip(Flight flight, Trip trip) {
+        flight.getTrips().add(trip);
+        flightRepository.save(flight);
     }
 }

@@ -30,11 +30,13 @@ public class FlightController {
     }
 
     @GetMapping("/available")
+    @ResponseStatus(code= HttpStatus.OK)
     public List<Flight>  fetchAvailable(@Valid @RequestParam Date date){
         return flightService.fetchAvailable(date);
     }
 
     @GetMapping("/available/{airline_id}")
+    @ResponseStatus(code = HttpStatus.OK)
     public List<Flight>  fetchAvailableByAirline(@Valid @PathVariable long airline_id,@Valid @RequestParam Date date) throws Exception {
         return flightService.fetchAvailableByAirline(date,airline_id);
     }
