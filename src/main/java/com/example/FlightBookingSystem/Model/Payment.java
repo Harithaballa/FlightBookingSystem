@@ -1,10 +1,18 @@
 package com.example.FlightBookingSystem.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,58 +31,17 @@ public class Payment {
     @Column(nullable = false)
     PaymentStatus status;
 
-    public Payment() {
-    }
+    @Column(name = "payment_date",nullable = false)
+    LocalDateTime paymentDate;
 
-    public Payment(double amount, Booking booking, PaymentType type, PaymentStatus status) {
-        this.amount = amount;
-        this.booking = booking;
-        this.type = type;
-        this.status = status;
-    }
+    @Column(name = "currency",nullable = false)
+    Currency currency;
 
-    public double getAmount() {
-        return amount;
-    }
+    @ManyToOne
+    @JoinColumn(name = "paid_by",nullable = false)
+    User paidBy;
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-
-    public PaymentType getType() {
-        return type;
-    }
-
-    public void setType(PaymentType type) {
-        this.type = type;
-    }
-
-    public PaymentStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PaymentStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment payment = (Payment) o;
-        return id == payment.id && Double.compare(payment.amount, amount) == 0 && Objects.equals(booking, payment.booking) && type == payment.type && status == payment.status;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, amount, booking, type, status);
-    }
+    @ManyToOne
+    @JoinColumn(name= "payment_method_id")
+    PaymentMethod paymentMethod;
 }
