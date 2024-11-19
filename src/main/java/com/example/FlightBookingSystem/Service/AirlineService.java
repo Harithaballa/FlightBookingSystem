@@ -38,4 +38,7 @@ public class AirlineService {
         return  airlineRepository.findAll();
     }
 
+    public Airline fetchByName(String airline_name) {
+        return  airlineRepository.findByName(airline_name);
+    }
 }

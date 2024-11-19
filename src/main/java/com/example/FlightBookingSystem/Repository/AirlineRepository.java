@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AirlineRepository extends JpaRepository<Airline,Long> {
+    Airline findByName(String airline_name);
 }

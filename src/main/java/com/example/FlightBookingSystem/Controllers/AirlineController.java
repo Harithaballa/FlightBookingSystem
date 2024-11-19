@@ -29,16 +29,19 @@ public class AirlineController {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
     public Airline fetch(@PathVariable @Valid long id) throws Exception {
         return airlineService.fetch(id);
     }
 
     @GetMapping("/all")
+    @ResponseStatus(code = HttpStatus.OK)
     public List<Airline> fetchAll(){
         return airlineService.fetchAll();
     }
 
     @GetMapping("/allNames")
+    @ResponseStatus(code = HttpStatus.OK)
     public List<AirlineNamesDto> fetchAllNames(){
         return airlineService.fetchAllNames();
     }
