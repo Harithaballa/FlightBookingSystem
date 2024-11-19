@@ -1,0 +1,7 @@
+fileignoreconfig:
+- filename: src/main/resources/application.properties
+  checksum: 24731b956c0fc9b41b9705d6cef9ba3da6dc318a2bfc1ddac703563995a21249
+- filename: src/main/java/com/example/FlightBookingSystem/Service/PaymentStrategy/CreditCardPaymentStrategy.java
+  checksum: 1d838480bb58097233b46572e4c7f1ef109e11dac2369b76f0f88c26b8cd7023
+version: ""
+
