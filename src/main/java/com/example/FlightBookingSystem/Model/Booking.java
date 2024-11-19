@@ -1,11 +1,21 @@
 package com.example.FlightBookingSystem.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,58 +35,22 @@ public class Booking {
     @Column(nullable = false)
     BookingStatus status;
 
-    public Booking() {
-    }
+    @OneToMany(mappedBy = "boooking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<TravellerDetails> travellerDetails;
 
-    public Booking(User bookedBy, Trip trip, List<Seat> bookedSeats, BookingStatus status) {
-        this.bookedBy = bookedBy;
-        this.trip = trip;
-        this.bookedSeats = bookedSeats;
-        this.status = status;
-    }
-
-    public User getBookedBy() {
-        return bookedBy;
-    }
-
-    public void setBookedBy(User bookedBy) {
-        this.bookedBy = bookedBy;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    public List<Seat> getBookedSeats() {
-        return bookedSeats;
-    }
-
-    public void setBookedSeats(List<Seat> bookedSeats) {
-        this.bookedSeats = bookedSeats;
-    }
-
-    public BookingStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(BookingStatus status) {
-        this.status = status;
-    }
+    @Column(name = "booking_date",nullable = false)
+    LocalDateTime bookingDate;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return id == booking.id && Objects.equals(bookedBy, booking.bookedBy) && Objects.equals(trip, booking.trip) && Objects.equals(bookedSeats, booking.bookedSeats) && status == booking.status;
+        return id.equals(booking.id) && bookedBy.equals(booking.bookedBy) && trip.equals(booking.trip) && Objects.equals(bookedSeats, booking.bookedSeats) && status == booking.status && Objects.equals(travellerDetails, booking.travellerDetails) && bookingDate.equals(booking.bookingDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bookedBy, trip, bookedSeats, status);
+        return Objects.hash(id, bookedBy, trip, bookedSeats, status, travellerDetails, bookingDate);
     }
 }
