@@ -21,6 +21,11 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(nullable = false)
+    double amount;
+
+    @Column(name = "currency",nullable = false)
+    Currency currency;
     @OneToOne
     @JoinColumn(name="booked_by")
     User bookedBy;

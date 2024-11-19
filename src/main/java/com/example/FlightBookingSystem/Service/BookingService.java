@@ -3,12 +3,14 @@ package com.example.FlightBookingSystem.Service;
 import com.example.FlightBookingSystem.Dto.BookingResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
 import com.example.FlightBookingSystem.Model.*;
+import com.example.FlightBookingSystem.Repository.BookingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookingService {
@@ -20,12 +22,16 @@ public class BookingService {
     SeatService seatService;
 
     PricingService pricingService;
+
+    BookingRepository bookingRepository;
     @Autowired
-    public  BookingService(TripService tripService,UserService userService,SeatService seatService,PricingService pricingService){
+    public  BookingService(TripService tripService,UserService userService,SeatService seatService,
+                           PricingService pricingService, BookingRepository bookingRepository){
         this.tripService = tripService;
         this.userService = userService;
         this.seatService = seatService;
         this.pricingService = pricingService;
+        this.bookingRepository = bookingRepository;
     }
 
     @Transactional
@@ -41,7 +47,7 @@ public class BookingService {
         return new BookingResponse(booking.getId(),availableSeats,booking.getStatus());
     }
 
-    private static Booking saveBooking(CreateBookingDto createBookingDto, User user, Trip trip, List<Seat> availableSeats) {
+    private Booking saveBooking(CreateBookingDto createBookingDto, User user, Trip trip, List<Seat> availableSeats) {
         Booking booking = new Booking();
         booking.setBookedBy(user);
         booking.setBookedSeats(availableSeats);
@@ -49,6 +55,17 @@ public class BookingService {
         booking.setStatus(BookingStatus.IN_PROGRESS);
         booking.setTravellerDetails(createBookingDto.getTravellerDetails());
         booking.setBookingDate(LocalDateTime.now());
+        booking.setAmount(createBookingDto.getAmount());
+        booking.setCurrency(createBookingDto.getCurrency());
+        bookingRepository.save(booking);
         return booking;
+    }
+
+    public Booking findById(long id) throws Exception {
+        return bookingRepository.findById(id).orElseThrow(()->new Exception("not found"));
+    }
+
+    public void save(Booking booking) {
+        bookingRepository.save(booking);
     }
 }

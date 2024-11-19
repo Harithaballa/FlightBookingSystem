@@ -2,11 +2,15 @@ package com.example.FlightBookingSystem.Service;
 
 import com.example.FlightBookingSystem.Dto.PaymentRequestDto;
 import com.example.FlightBookingSystem.Model.PaymentType;
-import com.example.FlightBookingSystem.Model.User;
 import com.example.FlightBookingSystem.Repository.PaymentRepository;
+import com.example.FlightBookingSystem.Service.PaymentStrategy.PaymentStrategy;
+import com.example.FlightBookingSystem.Service.PaymentStrategy.PaymentStrategyFactory;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class PaymentService {
@@ -22,9 +26,9 @@ public class PaymentService {
     }
 
     @Transactional
-    public void makePayment(PaymentRequestDto paymentRequestDto) throws Exception {
+    public ResponseEntity<Map<String, Object>> makePayment(PaymentRequestDto paymentRequestDto, String idempotencyKey) throws Exception {
         PaymentType paymentType = paymentRequestDto.getPaymentType();
         PaymentStrategy paymentStrategy = PaymentStrategyFactory.getPaymentStrategy(paymentType);
-        paymentStrategy.processPayment(paymentRequestDto);
+        return paymentStrategy.processPayment(paymentRequestDto,idempotencyKey);
     }
 }

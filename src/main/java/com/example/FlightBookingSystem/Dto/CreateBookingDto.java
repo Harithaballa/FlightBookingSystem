@@ -1,5 +1,6 @@
 package com.example.FlightBookingSystem.Dto;
 
+import com.example.FlightBookingSystem.Model.Currency;
 import com.example.FlightBookingSystem.Model.TravellerDetails;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,10 @@ public class CreateBookingDto {
     long bookedBy;
 
     long trip_id;
+
+    double amount;
+
+    Currency currency;
 
     List<Long> selectedSeats;
 

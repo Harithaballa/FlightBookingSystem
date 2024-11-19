@@ -15,14 +15,13 @@ import java.util.Map;
 @NoArgsConstructor
 public class PaymentRequestDto {
 
-    double amount;
+    String payment_method_id;
 
-    Currency currency;
-
-    PaymentType paymentType;
+    long booking_id;
 
     long user_id;
 
     Map<String, Object> paymentDetails;
 
+    PaymentType paymentType;
 }

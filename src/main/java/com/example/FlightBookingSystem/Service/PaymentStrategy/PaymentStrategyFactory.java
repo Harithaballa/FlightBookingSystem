@@ -1,4 +1,4 @@
-package com.example.FlightBookingSystem.Service;
+package com.example.FlightBookingSystem.Service.PaymentStrategy;
 
 import com.example.FlightBookingSystem.Model.PaymentType;
 
