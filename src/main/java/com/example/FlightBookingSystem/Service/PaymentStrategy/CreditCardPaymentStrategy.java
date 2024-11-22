@@ -1,7 +1,9 @@
 package com.example.FlightBookingSystem.Service.PaymentStrategy;
 
 import com.example.FlightBookingSystem.Dto.PaymentRequestDto;
-import com.example.FlightBookingSystem.Model.*;
+import com.example.FlightBookingSystem.Model.Booking;
+import com.example.FlightBookingSystem.Model.BookingStatus;
+import com.example.FlightBookingSystem.Model.Payment;
 import com.example.FlightBookingSystem.Repository.PaymentRepository;
 import com.example.FlightBookingSystem.Service.BookingService;
 import com.example.FlightBookingSystem.Service.UserService;
@@ -76,7 +78,6 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
                 booking.setStatus(BookingStatus.COMPLETED);
                 bookingService.save(booking);
             }
-
             response.put("status", intent.getStatus());
             response.put("bookingStatus", booking.getStatus());
         } catch (StripeException e) {
