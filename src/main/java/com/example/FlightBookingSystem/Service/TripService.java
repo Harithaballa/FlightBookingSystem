@@ -2,10 +2,10 @@ package com.example.FlightBookingSystem.Service;
 
 import com.example.FlightBookingSystem.Dto.CreateSeatDto;
 import com.example.FlightBookingSystem.Dto.CreateTripDto;
+import com.example.FlightBookingSystem.Exceptions.UnavailableFlightException;
 import com.example.FlightBookingSystem.Model.*;
 import com.example.FlightBookingSystem.Repository.Specifiication.TripSpecification;
 import com.example.FlightBookingSystem.Repository.TripRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TripService {
@@ -52,7 +51,7 @@ public class TripService {
             return flight.getNumber();
         }
         else
-            throw new Exception("No flights available");
+            throw new UnavailableFlightException("No flights available");
     }
 
     public void addTrips(List<CreateTripDto> createTripDtos) throws Exception {
@@ -68,7 +67,7 @@ public class TripService {
     }
 
     public Trip findById(long id) throws  Exception{
-       return tripRepository.findById(id).orElseThrow(()-> new Exception("Trip not found"));
+       return tripRepository.findById(id).orElseThrow(()-> new Exception("Trip not found for the id: "+id));
     }
 
     public void addSeats(long id, List<CreateSeatDto> createSeatDtos) throws Exception {

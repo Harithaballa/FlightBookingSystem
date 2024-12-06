@@ -1,5 +1,7 @@
 package com.example.FlightBookingSystem.Handlers;
 
+import com.example.FlightBookingSystem.Exceptions.UnavailableFlightException;
+import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.stripe.exception.CardException;
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.exception.StripeException;
@@ -9,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -29,5 +33,17 @@ public class CustomExceptionHandler {
             return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<ErrorResponse>(new ErrorResponse("Stripe error occurred",ex.getMessage()),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnavailableSeatException.class)
+    public ResponseEntity<ErrorResponse> unavailableSeatException(UnavailableSeatException ex) {
+        ErrorResponse error = new ErrorResponse("Seat is already booked", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnavailableFlightException.class)
+    public ResponseEntity<ErrorResponse> unavailableFlightsException(UnavailableFlightException ex) {
+        ErrorResponse error = new ErrorResponse("There are no flights available", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

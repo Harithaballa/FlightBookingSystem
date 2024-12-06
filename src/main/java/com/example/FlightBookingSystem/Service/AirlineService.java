@@ -27,7 +27,7 @@ public class AirlineService {
     }
 
     public Airline fetch(long id) throws Exception {
-        return airlineRepository.findById(id).orElseThrow(()->new Exception("not found"));
+        return airlineRepository.findById(id).orElseThrow(()->new Exception(" Airline not found for the id: "+id));
     }
 
     public List<AirlineNamesDto> fetchAllNames() {

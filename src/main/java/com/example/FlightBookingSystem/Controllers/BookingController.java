@@ -2,6 +2,7 @@ package com.example.FlightBookingSystem.Controllers;
 
 import com.example.FlightBookingSystem.Dto.BookingResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
+import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.example.FlightBookingSystem.Service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<BookingResponse> book(@Valid  @RequestBody CreateBookingDto createBookingDto) throws Exception {
+    public ResponseEntity<BookingResponse> book(@Valid  @RequestBody CreateBookingDto createBookingDto) throws UnavailableSeatException,Exception {
        BookingResponse bookingResponse = bookingService.book(createBookingDto);
        return ResponseEntity.ok(bookingResponse);
     }

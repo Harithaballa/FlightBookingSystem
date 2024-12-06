@@ -37,6 +37,7 @@ public class SeatService {
     public List<Seat> fetchByTrip(Trip trip){
        return seatRepository.findByTrip(trip);
     }
+
     public void delete(long id) {
         seatRepository.deleteById(id);
     }
@@ -48,7 +49,7 @@ public class SeatService {
     public void book(Trip trip, List<Long> selectedSeats, List<CreateTravellerDto> travellerDetails) throws Exception {
         List<Seat> availableSeats = fetchByTrip(trip);
         for(long seat_id:selectedSeats){
-            Seat seat = seatRepository.findById(seat_id).orElseThrow(()-> new Exception("Trip not found"));
+            Seat seat = seatRepository.findById(seat_id).orElseThrow(()-> new Exception("Seat not found for the id: "+seat_id));
             if(seat.getStatus() == SeatStatus.AVAILABLE){
                 seat.setStatus(SeatStatus.OCCUPIED);
             }
@@ -61,7 +62,7 @@ public class SeatService {
         }
     }
 
-    public List<Seat> findAllbyId(List<Long> selectedSeats) {
+    public List<Seat> findAllById(List<Long> selectedSeats) {
        return seatRepository.findAllById(selectedSeats);
     }
 }

@@ -2,6 +2,7 @@ package com.example.FlightBookingSystem.Service;
 
 import com.example.FlightBookingSystem.Dto.BookingResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
+import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.example.FlightBookingSystem.Model.*;
 import com.example.FlightBookingSystem.Repository.BookingRepository;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookingService {
@@ -35,13 +35,13 @@ public class BookingService {
     }
 
     @Transactional
-    public BookingResponse book(CreateBookingDto createBookingDto) throws Exception {
+    public BookingResponse book(CreateBookingDto createBookingDto) throws UnavailableSeatException,Exception {
         User user = userService.findById(createBookingDto.getBookedBy());
         Trip trip = tripService.findById(createBookingDto.getTrip_id());
 
         List<Seat> availableSeats = seatService.findAvailableSeats(createBookingDto.getTrip_id(),createBookingDto.getSelectedSeats());
         if(availableSeats.stream().count()!=createBookingDto.getSelectedSeats().stream().count())
-            throw new Exception("Some seats are not available");
+            throw new UnavailableSeatException("Some seats are not available");
         seatService.reserveSeats(availableSeats);
         Booking booking = saveBooking(createBookingDto, user, trip, availableSeats);
         return new BookingResponse(booking.getId(),availableSeats,booking.getStatus());
@@ -62,7 +62,7 @@ public class BookingService {
     }
 
     public Booking findById(long id) throws Exception {
-        return bookingRepository.findById(id).orElseThrow(()->new Exception("not found"));
+        return bookingRepository.findById(id).orElseThrow(()->new Exception("Booking is not found for the id: "+id));
     }
 
     public void save(Booking booking) {

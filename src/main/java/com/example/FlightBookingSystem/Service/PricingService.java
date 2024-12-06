@@ -46,7 +46,7 @@ public class PricingService {
     public GrandTotalResponseDto getGrandTotal(GrandTotalRequestDto grandTotalRequestDto) throws Exception {
         User user = userService.findById(grandTotalRequestDto.getUser_id());
         Trip trip = tripService.findById(grandTotalRequestDto.getTrip_id());
-        List<Seat> selectedSeats = seatService.findAllbyId(grandTotalRequestDto.getSelectedSeats());
+        List<Seat> selectedSeats = seatService.findAllById(grandTotalRequestDto.getSelectedSeats());
         Double flightCharges = selectedSeats.stream().map(seat -> getPrice(seat.getType())).reduce(0.0,Double::sum);
         Double taxes = calculateTax(flightCharges); //make it dynamic
         Double total = calculateTotal(flightCharges,taxes);
