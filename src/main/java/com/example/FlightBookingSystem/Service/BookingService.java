@@ -1,6 +1,7 @@
 package com.example.FlightBookingSystem.Service;
 
 import com.example.FlightBookingSystem.Dto.BookingResponse;
+import com.example.FlightBookingSystem.Dto.CancellationResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
 import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.example.FlightBookingSystem.Model.*;
@@ -24,14 +25,19 @@ public class BookingService {
     PricingService pricingService;
 
     BookingRepository bookingRepository;
+
+    RefundService refundService;
+
     @Autowired
     public  BookingService(TripService tripService,UserService userService,SeatService seatService,
-                           PricingService pricingService, BookingRepository bookingRepository){
+                           PricingService pricingService, BookingRepository bookingRepository,
+                           RefundService refundService){
         this.tripService = tripService;
         this.userService = userService;
         this.seatService = seatService;
         this.pricingService = pricingService;
         this.bookingRepository = bookingRepository;
+        this.refundService = refundService;
     }
 
     @Transactional
@@ -70,10 +76,19 @@ public class BookingService {
         bookingRepository.save(booking);
     }
 
-    public void cancelBooking(long id) throws Exception {
+    public CancellationResponse cancelBooking(long id) throws Exception {
         Booking booking = bookingRepository.findById(id).orElseThrow(()->new Exception("Booking is not found for the id: "+id));
+
+        if(booking.getStatus() == BookingStatus.CANCELLED){
+            throw new Exception("Already cancelled");
+        }
+
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
+
+         double refundAmount =  refundService.initiate(booking.getId());
+
+        return new CancellationResponse(booking.getId(),refundAmount);
     }
 
     public List<Booking> findByUserId(Long userId) {

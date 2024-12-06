@@ -1,21 +1,17 @@
 package com.example.FlightBookingSystem.Service.PaymentStrategy;
 
+import com.example.FlightBookingSystem.Dto.PaymentIntentRequest;
 import com.example.FlightBookingSystem.Dto.PaymentRequestDto;
 import com.example.FlightBookingSystem.Model.Booking;
 import com.example.FlightBookingSystem.Model.BookingStatus;
 import com.example.FlightBookingSystem.Model.Payment;
 import com.example.FlightBookingSystem.Repository.PaymentRepository;
 import com.example.FlightBookingSystem.Service.BookingService;
+import com.example.FlightBookingSystem.Service.StripeService;
 import com.example.FlightBookingSystem.Service.UserService;
-import com.stripe.Stripe;
-import com.stripe.exception.ApiConnectionException;
-import com.stripe.exception.RateLimitException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
-import com.stripe.net.RequestOptions;
-import com.stripe.param.PaymentIntentCreateParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -29,19 +25,15 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
 
     BookingService bookingService;
 
-    @Value("${stripe.secret.key}")
-    private String secretKey;
-
-    public CreditCardPaymentStrategy() {
-
-    }
+    StripeService stripeService;
 
     @Autowired
-    public CreditCardPaymentStrategy(UserService userService,PaymentRepository paymentRepository,BookingService bookingService) {
+    public CreditCardPaymentStrategy(UserService userService,PaymentRepository paymentRepository,
+                                     BookingService bookingService, StripeService stripeService) {
         this.userService = userService;
         this.paymentRepository = paymentRepository;
         this.bookingService = bookingService;
-        Stripe.apiKey = secretKey;
+        this.stripeService = stripeService;
     }
 
     @Override
@@ -51,18 +43,9 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
         Booking booking = bookingService.findById(paymentRequestDto.getBooking_id());
 
         try {
-            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount((long) (booking.getAmount()))
-                    .setCurrency(booking.getCurrency().toString())
-                    .setPaymentMethod(paymentRequestDto.getPayment_method_id())
-                    .setConfirm(true)
-                    .build();
+            PaymentIntentRequest paymentIntentRequest = getPaymentIntentRequest(paymentRequestDto, idempotencyKey, booking);
 
-            RequestOptions requestOptions = RequestOptions.builder()
-                    .setIdempotencyKey(idempotencyKey) // Stripe Idempotency Key
-                    .build();
-
-            PaymentIntent intent = createPaymentIntentWithRetry(params, requestOptions,3);
+            PaymentIntent intent = stripeService.createPaymentIntent(paymentIntentRequest);
 
             Payment payment = paymentRepository.findByPaymentIntentId(intent.getId())
                     .orElseGet(() -> {
@@ -88,29 +71,14 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
         return ResponseEntity.ok(response);
     }
 
-    private PaymentIntent createPaymentIntentWithRetry(PaymentIntentCreateParams params, RequestOptions requestOptions,int maxRetries) throws StripeException {
-        int attempts = 0;
-        while (attempts < maxRetries) {
-            try {
-                return PaymentIntent.create(params,requestOptions);
-            } catch (StripeException e) {
-                if (isRetryableError(e) && attempts < maxRetries - 1) {
-                    attempts++;
-                    try {
-                        Thread.sleep((long) Math.pow(2, attempts) * 1000); // Exponential backoff
-                    } catch (InterruptedException ignored) {
-
-                    }
-                } else {
-                    throw e;
-                }
-            }
-        }
-        throw new RuntimeException("Failed to create payment intent after retries");
+    private PaymentIntentRequest getPaymentIntentRequest(PaymentRequestDto paymentRequestDto, String idempotencyKey, Booking booking) {
+        PaymentIntentRequest paymentIntentRequest = new PaymentIntentRequest();
+        paymentIntentRequest.setAmount(booking.getAmount());
+        paymentIntentRequest.setCurrency(booking.getCurrency());
+        paymentIntentRequest.setPayment_method_id(paymentRequestDto.getPayment_method_id());
+        paymentIntentRequest.setIdempotencyKey(idempotencyKey);
+        return paymentIntentRequest;
     }
 
-    private boolean isRetryableError(StripeException e) {
-        return e instanceof ApiConnectionException || e instanceof RateLimitException;
-    }
 
 }

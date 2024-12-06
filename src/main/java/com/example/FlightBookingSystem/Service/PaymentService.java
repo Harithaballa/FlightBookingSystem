@@ -31,4 +31,8 @@ public class PaymentService {
         PaymentStrategy paymentStrategy = PaymentStrategyFactory.getPaymentStrategy(paymentType);
         return paymentStrategy.processPayment(paymentRequestDto,idempotencyKey);
     }
+
+    public String getPaymentIntentByBooking(Long bookingId) {
+        return paymentRepository.findPaymentIntentByBooking(bookingId);
+    }
 }

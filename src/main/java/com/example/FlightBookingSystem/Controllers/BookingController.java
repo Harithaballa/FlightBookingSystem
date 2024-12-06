@@ -1,8 +1,8 @@
 package com.example.FlightBookingSystem.Controllers;
 
 import com.example.FlightBookingSystem.Dto.BookingResponse;
+import com.example.FlightBookingSystem.Dto.CancellationResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
-import com.example.FlightBookingSystem.Dto.ResponseDto;
 import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.example.FlightBookingSystem.Service.BookingService;
 import jakarta.validation.Valid;
@@ -31,9 +31,9 @@ public class BookingController {
 
     @PutMapping("{bookingId}/cancel")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<ResponseDto> cancelBooking(@Valid @PathVariable long bookingId) throws UnavailableSeatException,Exception {
-        bookingService.cancelBooking(bookingId);
-        return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.OK,"cancelled successfully"), HttpStatus.OK);
+    public ResponseEntity<CancellationResponse> cancelBooking(@Valid @PathVariable long bookingId) throws UnavailableSeatException,Exception {
+        CancellationResponse response = bookingService.cancelBooking(bookingId);
+        return ResponseEntity.ok(response);
     }
 
 

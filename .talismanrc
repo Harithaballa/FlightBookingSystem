@@ -8,3 +8,7 @@ fileignoreconfig:
 - filename: src/main/resources/application.properties
   checksum: 14a86a7b206667e4c691621558fcc798be9cabfe838db58e40f01aba64ab77f0
 version: ""
+fileignoreconfig:
+- filename: src/main/java/com/example/FlightBookingSystem/Service/StripeService.java
+  checksum: 64aaee5d7aa170e030ccf3092442952818be30a65d91942841b02aae817c7b59
+version: ""

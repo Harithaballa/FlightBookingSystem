@@ -26,6 +26,7 @@ public class Booking {
 
     @Column(name = "currency",nullable = false)
     Currency currency;
+
     @OneToOne
     @JoinColumn(name="booked_by")
     User bookedBy;
