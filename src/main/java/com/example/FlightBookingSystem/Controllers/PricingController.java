@@ -5,6 +5,7 @@ import com.example.FlightBookingSystem.Dto.GrandTotalResponseDto;
 import com.example.FlightBookingSystem.Service.PricingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

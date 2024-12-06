@@ -5,6 +5,7 @@ import com.example.FlightBookingSystem.Model.User;
 import com.example.FlightBookingSystem.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "user-bookings", key = "#id")
     public List<Booking> fetchAllBookings(@Valid @PathVariable long id) throws Exception {
         return userService.getAllBookings(id);
     }

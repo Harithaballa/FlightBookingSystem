@@ -7,6 +7,7 @@ import com.example.FlightBookingSystem.Model.Trip;
 import com.example.FlightBookingSystem.Service.TripService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +49,7 @@ public class TripController {
     }
 
     @GetMapping("/search")
+    @Cacheable(value = "flightSearch", key = "T(com.example.FlightBookingSystem.Caching.FlightSearchKeyGenerator).generateKey(#source, #destination, #date, #numberOfSeats, #seatType,#airline_name)")
     public ResponseEntity<Page<Trip>> searchByCriteria(@Valid @RequestParam String source, @Valid @RequestParam String destination,
                                                        @Valid @RequestParam Date startDate,
                                                        @Valid @RequestParam(required = false, defaultValue = "1") int numberOfSeats,
@@ -61,6 +63,7 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
+    @Cacheable(value = "trip", key = "#id")
     public ResponseEntity<Trip> findById(@Valid @PathVariable long id) throws Exception {
        Trip trip =  tripService.findById(id);
        return  ResponseEntity.ok(trip);
