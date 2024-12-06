@@ -1,5 +1,6 @@
 package com.example.FlightBookingSystem.Controllers;
 
+import com.example.FlightBookingSystem.Model.Booking;
 import com.example.FlightBookingSystem.Model.User;
 import com.example.FlightBookingSystem.Service.UserService;
 import jakarta.validation.Valid;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -23,5 +26,10 @@ public class UserController {
     @GetMapping("/{id}")
     public User findById(@Valid @PathVariable long id) throws Exception {
         return userService.findById(id);
+    }
+
+    @GetMapping("/{id}")
+    public List<Booking> fetchAllBookings(@Valid @PathVariable long id) throws Exception {
+        return userService.getAllBookings(id);
     }
 }

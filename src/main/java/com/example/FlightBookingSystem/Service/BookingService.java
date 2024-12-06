@@ -75,4 +75,8 @@ public class BookingService {
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
+
+    public List<Booking> findByUserId(Long userId) {
+        return bookingRepository.findByUserId(userId);
+    }
 }

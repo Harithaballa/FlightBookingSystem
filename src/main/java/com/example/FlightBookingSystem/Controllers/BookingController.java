@@ -33,7 +33,8 @@ public class BookingController {
     @ResponseStatus(code = HttpStatus.OK)
     public ResponseEntity<ResponseDto> cancelBooking(@Valid @PathVariable long bookingId) throws UnavailableSeatException,Exception {
         bookingService.cancelBooking(bookingId);
-        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK,"cancelled successfully"));
+        return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.OK,"cancelled successfully"), HttpStatus.OK);
     }
+
 
 }
