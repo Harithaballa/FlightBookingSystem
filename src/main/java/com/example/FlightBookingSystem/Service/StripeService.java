@@ -1,7 +1,6 @@
 package com.example.FlightBookingSystem.Service;
 
 import com.example.FlightBookingSystem.Dto.PaymentIntentRequest;
-import com.example.FlightBookingSystem.Model.RefundStatus;
 import com.stripe.Stripe;
 import com.stripe.exception.ApiConnectionException;
 import com.stripe.exception.RateLimitException;
@@ -39,15 +38,17 @@ public class StripeService {
         return createPaymentIntentWithRetry(params, requestOptions,3);
     }
 
-    public Refund refund(String paymentIntentId, double amount) throws Exception {
+    public Refund refund(String paymentIntentId, double amount, String idempotencyKey) throws Exception {
         RefundCreateParams refundParams = RefundCreateParams.builder()
                 .setPaymentIntent(paymentIntentId)
                 .setAmount((long)amount)
                 .build();
 
-        Refund refund = Refund.create(refundParams);
+        RequestOptions requestOptions = RequestOptions.builder()
+                .setIdempotencyKey(idempotencyKey)
+                .build();
 
-        return refund;
+        return Refund.create(refundParams,requestOptions);
     }
 
     private PaymentIntent createPaymentIntentWithRetry(PaymentIntentCreateParams params, RequestOptions requestOptions, int maxRetries) throws StripeException {

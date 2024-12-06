@@ -57,12 +57,12 @@ public class RefundService {
         return refundAmount;
     }
 
-    public void process(Long id) throws Exception {
+    public void process(Long id, String idempotencyKey) throws Exception {
         Refund refund = refundRepository.findById(id).orElseThrow(()-> new Exception("refund is not found for id: "+id));
 
         String paymentIntentId = paymentService.getPaymentIntentByBooking(refund.getBookingId());
 
-        com.stripe.model.Refund stripeRefund = stripeService.refund(paymentIntentId,refund.getAmount());
+        com.stripe.model.Refund stripeRefund = stripeService.refund(paymentIntentId,refund.getAmount(),idempotencyKey);
 
         String status = stripeRefund.getStatus();
         RefundStatus refundStatus = refund.getStatus();

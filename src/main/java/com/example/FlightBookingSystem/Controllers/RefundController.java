@@ -4,10 +4,7 @@ import com.example.FlightBookingSystem.Dto.RefundRequest;
 import com.example.FlightBookingSystem.Service.RefundService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController("refunds")
@@ -26,7 +23,7 @@ public class RefundController {
     }
 
     @PostMapping("{id}/process")
-    public void processRefund(@Valid @PathVariable Long id) throws Exception {
-        refundService.process(id);
+    public void processRefund(@Valid @PathVariable Long id,@RequestHeader("Idempotency-Key") String idempotencyKey) throws Exception {
+        refundService.process(id,idempotencyKey);
     }
 }
