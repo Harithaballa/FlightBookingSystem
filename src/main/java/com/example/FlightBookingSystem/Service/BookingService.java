@@ -65,7 +65,14 @@ public class BookingService {
         return bookingRepository.findById(id).orElseThrow(()->new Exception("Booking is not found for the id: "+id));
     }
 
+    @Transactional
     public void save(Booking booking) {
+        bookingRepository.save(booking);
+    }
+
+    public void cancelBooking(long id) throws Exception {
+        Booking booking = bookingRepository.findById(id).orElseThrow(()->new Exception("Booking is not found for the id: "+id));
+        booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
 }

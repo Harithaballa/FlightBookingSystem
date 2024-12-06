@@ -2,6 +2,7 @@ package com.example.FlightBookingSystem.Controllers;
 
 import com.example.FlightBookingSystem.Dto.BookingResponse;
 import com.example.FlightBookingSystem.Dto.CreateBookingDto;
+import com.example.FlightBookingSystem.Dto.ResponseDto;
 import com.example.FlightBookingSystem.Exceptions.UnavailableSeatException;
 import com.example.FlightBookingSystem.Service.BookingService;
 import jakarta.validation.Valid;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/boo")
+@RequestMapping("/booking")
 public class BookingController {
 
     BookingService bookingService;
@@ -27,4 +28,12 @@ public class BookingController {
        BookingResponse bookingResponse = bookingService.book(createBookingDto);
        return ResponseEntity.ok(bookingResponse);
     }
+
+    @PutMapping("{bookingId}/cancel")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ResponseEntity<ResponseDto> cancelBooking(@Valid @PathVariable long bookingId) throws UnavailableSeatException,Exception {
+        bookingService.cancelBooking(bookingId);
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK,"cancelled successfully"));
+    }
+
 }
