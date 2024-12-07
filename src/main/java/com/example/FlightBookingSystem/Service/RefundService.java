@@ -83,4 +83,8 @@ public class RefundService {
         refund.setStatus(refundStatus);
         refundRepository.save(refund);
     }
+
+    public Refund findById(Long id) throws Exception {
+        return refundRepository.findById(id).orElseThrow(()-> new Exception("refund is not found for id: "+id));
+    }
 }
