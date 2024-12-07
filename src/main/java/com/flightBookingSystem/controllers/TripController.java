@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -31,18 +32,21 @@ public class TripController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN")
     public int add(@Valid @RequestBody CreateTripDto createTripDto) throws Exception {
         int  createdFlightNumber = tripService.add(createTripDto);
         return createdFlightNumber;
     }
 
     @PostMapping("/batch")
+    @PreAuthorize("hasRole('ADMIN")
     @ResponseStatus(code = HttpStatus.CREATED)
     public void addTrips(@Valid @RequestBody List<CreateTripDto> createTripDtos) throws Exception {
         tripService.addTrips(createTripDtos);
     }
 
     @PostMapping("/{id}/seats")
+    @PreAuthorize("hasRole('ADMIN")
     @ResponseStatus(code = HttpStatus.CREATED)
     public void addSeats(@Valid @PathVariable long id, @RequestBody List<CreateSeatDto> createSeatDtos) throws Exception {
         tripService.addSeats(id,createSeatDtos);
