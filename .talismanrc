@@ -4,3 +4,7 @@ fileignoreconfig:
 - filename: src/main/java/com/example/FlightBookingSystem/Model/Gender.java
   checksum: f3d55ecef10792b8c98d70eeb2e35e536f719fd34aedaa0f46ba53ca92f71fbe
 version: ""
+fileignoreconfig:
+- filename: src/main/java/com/example/FlightBookingSystem/model/Gender.java
+  checksum: 01912b36ca5fe07a9696b9b048c41e91377a717ca2305e9a9d23e5587caf6f6d
+version: ""
