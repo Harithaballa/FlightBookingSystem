@@ -20,16 +20,16 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     private JwtTokenHelper jwtTokenHelper;
 
-    private final HandlerExceptionResolver handlerExceptionResolver;
+    private HandlerExceptionResolver handlerExceptionResolver;
 
     @Autowired
     public JwtAuthenticationFilter(
             JwtTokenHelper jwtTokenHelper,
-            UserDetailsService userDetailsService,
+            CustomUserDetailsService userDetailsService,
             HandlerExceptionResolver handlerExceptionResolver
     ) {
         this.jwtTokenHelper = jwtTokenHelper;
