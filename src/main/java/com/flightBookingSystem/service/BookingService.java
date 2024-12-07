@@ -4,7 +4,6 @@ import com.flightBookingSystem.dto.BookingResponse;
 import com.flightBookingSystem.dto.CancellationResponse;
 import com.flightBookingSystem.dto.CreateBookingDto;
 import com.flightBookingSystem.exceptions.UnavailableSeatException;
-import com.example.FlightBookingSystem.model.*;
 import com.flightBookingSystem.repository.BookingRepository;
 import com.flightBookingSystem.model.*;
 import jakarta.transaction.Transactional;

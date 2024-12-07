@@ -1,6 +1,5 @@
 package com.flightBookingSystem.repository.Specifiication;
 
-import com.example.FlightBookingSystem.model.*;
 import com.flightBookingSystem.model.*;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;

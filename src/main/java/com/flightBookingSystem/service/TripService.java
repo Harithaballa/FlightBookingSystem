@@ -3,7 +3,6 @@ package com.flightBookingSystem.service;
 import com.flightBookingSystem.dto.CreateSeatDto;
 import com.flightBookingSystem.dto.CreateTripDto;
 import com.flightBookingSystem.exceptions.UnavailableFlightException;
-import com.example.FlightBookingSystem.model.*;
 import com.flightBookingSystem.repository.Specifiication.TripSpecification;
 import com.flightBookingSystem.repository.TripRepository;
 import com.flightBookingSystem.model.*;
