@@ -1,4 +1,4 @@
-package com.example.FlightBookingSystem.Caching;
+package com.example.FlightBookingSystem.Config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

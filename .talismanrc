@@ -12,3 +12,13 @@ fileignoreconfig:
 - filename: src/main/resources/application.properties
   checksum: 25116707eb7be9773da2d24a17958f96285c53ebcfcdb440f6e4487d5e7c354e
 version: ""
+fileignoreconfig:
+- filename: src/main/java/com/example/FlightBookingSystem/security/JwtTokenHelper.java
+  checksum: 7d527e8a743d8fd72a612934e559e10f0c1aed1ce1a1d826086a95a6195090ba
+- filename: src/main/java/com/example/FlightBookingSystem/security/JwtAuthenticationFilter.java
+  checksum: d2a404b1854cc9a11080fbac97b6de196a7e68ba78744ac1b0aeaab921d1e59f
+- filename: src/main/resources/application.properties
+  checksum: d9937f4d0dca2555e5378073f62c46d37b5b5c10234b864d9c9cb2d99662aedc
+- filename: src/main/java/com/example/FlightBookingSystem/Service/AuthenticationService.java
+  checksum: d054f5d8178f7aba2df539bc140a386c364f5da4b7aba5ddee4e1fe3984e1b85
+version: ""
