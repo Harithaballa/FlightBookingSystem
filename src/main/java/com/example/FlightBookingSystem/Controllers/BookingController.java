@@ -35,6 +35,4 @@ public class BookingController {
         CancellationResponse response = bookingService.cancelBooking(bookingId);
         return ResponseEntity.ok(response);
     }
-
-
 }

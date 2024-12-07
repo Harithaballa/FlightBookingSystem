@@ -1,9 +1,10 @@
 package com.example.FlightBookingSystem.Caching;
 
+import java.util.List;
 import java.util.StringJoiner;
 
-public class FlightSearchKeyGenerator {
-    public static String generateKey(String source, String destination, String startDate, int numberOfSeats, String seatType,String airline_name) {
+public class KeyGenerator {
+    public static String generateKeyForFlightSearch(String source, String destination, String startDate, int numberOfSeats, String seatType,String airline_name) {
         StringJoiner key = new StringJoiner("-");
         key.add(source).add(destination).add(startDate);
 
@@ -15,6 +16,14 @@ public class FlightSearchKeyGenerator {
         }
         if(airline_name!=null && !airline_name.isEmpty()){
             key.add("airline: "+airline_name);
+        }
+        return key.toString();
+    }
+
+    public static String generateKeyForSeats(List<Long> seatNumbers){
+        StringBuilder key = new StringBuilder();
+        for(long number:seatNumbers){
+            key.append("seat: "+number);
         }
         return key.toString();
     }

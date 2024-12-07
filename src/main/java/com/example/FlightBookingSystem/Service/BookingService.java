@@ -28,29 +28,45 @@ public class BookingService {
 
     RefundService refundService;
 
+    DistributedLockService distributedLockService;
+
     @Autowired
     public  BookingService(TripService tripService,UserService userService,SeatService seatService,
                            PricingService pricingService, BookingRepository bookingRepository,
-                           RefundService refundService){
+                           RefundService refundService,DistributedLockService distributedLockService){
         this.tripService = tripService;
         this.userService = userService;
         this.seatService = seatService;
         this.pricingService = pricingService;
         this.bookingRepository = bookingRepository;
         this.refundService = refundService;
+        this.distributedLockService = distributedLockService;
     }
 
     @Transactional
     public BookingResponse book(CreateBookingDto createBookingDto) throws UnavailableSeatException,Exception {
-        User user = userService.findById(createBookingDto.getBookedBy());
-        Trip trip = tripService.findById(createBookingDto.getTrip_id());
+        boolean lockAcquired = distributedLockService.tryLockSeats(createBookingDto.getTrip_id(),createBookingDto.getSelectedSeats() );
 
-        List<Seat> availableSeats = seatService.findAvailableSeats(createBookingDto.getTrip_id(),createBookingDto.getSelectedSeats());
-        if(availableSeats.stream().count()!=createBookingDto.getSelectedSeats().stream().count())
-            throw new UnavailableSeatException("Some seats are not available");
-        seatService.reserveSeats(availableSeats);
-        Booking booking = saveBooking(createBookingDto, user, trip, availableSeats);
-        return new BookingResponse(booking.getId(),availableSeats,booking.getStatus());
+        if (!lockAcquired) {
+            throw new UnavailableSeatException("Another process is booking this seat"); // Another process is booking this seat
+        }
+
+        try {
+            User user = userService.findById(createBookingDto.getBookedBy());
+            Trip trip = tripService.findById(createBookingDto.getTrip_id());
+
+            List<Seat> availableSeats = seatService.findAvailableSeats(createBookingDto.getTrip_id(), createBookingDto.getSelectedSeats());
+            if (availableSeats.stream().count() != createBookingDto.getSelectedSeats().stream().count())
+                throw new UnavailableSeatException("Some seats are not available");
+
+            seatService.reserveSeats(availableSeats);
+            Booking booking = saveBooking(createBookingDto, user, trip, availableSeats);
+            return new BookingResponse(booking.getId(),availableSeats,booking.getStatus());
+        }
+        finally {
+            // Always release the lock
+            distributedLockService.unlockSeats(createBookingDto.getTrip_id(),createBookingDto.getSelectedSeats() );
+        }
     }
 
     private Booking saveBooking(CreateBookingDto createBookingDto, User user, Trip trip, List<Seat> availableSeats) {

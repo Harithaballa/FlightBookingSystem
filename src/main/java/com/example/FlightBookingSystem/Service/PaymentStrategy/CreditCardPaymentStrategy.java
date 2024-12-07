@@ -36,6 +36,10 @@ public class CreditCardPaymentStrategy implements PaymentStrategy {
         this.stripeService = stripeService;
     }
 
+    public CreditCardPaymentStrategy() {
+
+    }
+
     @Override
     public ResponseEntity<Map<String, Object>> processPayment(PaymentRequestDto paymentRequestDto, String idempotencyKey) throws Exception {
 

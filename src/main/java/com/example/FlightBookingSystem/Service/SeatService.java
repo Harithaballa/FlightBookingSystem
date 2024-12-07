@@ -59,6 +59,7 @@ public class SeatService {
     public void reserveSeats(List<Seat> availableSeats) {
         for(Seat seat:availableSeats){
             seat.setStatus(SeatStatus.OCCUPIED);
+            seatRepository.save(seat);
         }
     }
 

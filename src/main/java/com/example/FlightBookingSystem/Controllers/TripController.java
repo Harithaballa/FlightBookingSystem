@@ -49,7 +49,7 @@ public class TripController {
     }
 
     @GetMapping("/search")
-    @Cacheable(value = "flightSearch", key = "T(com.example.FlightBookingSystem.Caching.FlightSearchKeyGenerator).generateKey(#source, #destination, #date, #numberOfSeats, #seatType,#airline_name)")
+    @Cacheable(value = "flightSearch", key = "T(com.example.FlightBookingSystem.Caching.KeyGenerator).generateKeyForFlightSearch(#source, #destination, #date, #numberOfSeats, #seatType,#airline_name)")
     public ResponseEntity<Page<Trip>> searchByCriteria(@Valid @RequestParam String source, @Valid @RequestParam String destination,
                                                        @Valid @RequestParam Date startDate,
                                                        @Valid @RequestParam(required = false, defaultValue = "1") int numberOfSeats,
