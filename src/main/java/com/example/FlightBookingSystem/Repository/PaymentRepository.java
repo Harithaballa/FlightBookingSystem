@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Optional<Payment> findByPaymentIntentId(String id);
 
-    @Query("Select p.paymentIntentId from Payment p where p.booking_id = :bookingId ")
+    @Query("Select p.paymentIntentId from Payment p where p.booking = (select b from Booking b where b.id = :bookingId) ")
     String findPaymentIntentByBooking(@Param("bookingId") Long bookingId);
 }

@@ -41,7 +41,7 @@ public class Booking {
     @Column(nullable = false)
     BookingStatus status;
 
-    @OneToMany(mappedBy = "boooking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<TravellerDetails> travellerDetails;
 
     @Column(name = "booking_date",nullable = false)

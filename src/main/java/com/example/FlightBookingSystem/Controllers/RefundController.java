@@ -19,10 +19,10 @@ public class RefundController {
         this.refundService = refundService;
     }
 
-    @PostMapping("/calculate")
-    public double calculateRefund(@Valid @RequestBody RefundRequest request) throws Exception {
-        return refundService.calculate(request);
-    }
+//    @PostMapping("/calculate")
+//    public double calculateRefund(@Valid @RequestBody RefundRequest request) throws Exception {
+//        return refundService.calculate(request.getBookingId());
+//    }
 
     @PostMapping("{id}/process")
     public void processRefund(@Valid @PathVariable Long id,@RequestHeader("Idempotency-Key") String idempotencyKey) throws Exception {

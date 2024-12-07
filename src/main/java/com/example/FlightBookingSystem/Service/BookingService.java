@@ -22,8 +22,6 @@ public class BookingService {
 
     SeatService seatService;
 
-    PricingService pricingService;
-
     BookingRepository bookingRepository;
 
     RefundService refundService;
@@ -32,12 +30,11 @@ public class BookingService {
 
     @Autowired
     public  BookingService(TripService tripService,UserService userService,SeatService seatService,
-                           PricingService pricingService, BookingRepository bookingRepository,
+                           BookingRepository bookingRepository,
                            RefundService refundService,DistributedLockService distributedLockService){
         this.tripService = tripService;
         this.userService = userService;
         this.seatService = seatService;
-        this.pricingService = pricingService;
         this.bookingRepository = bookingRepository;
         this.refundService = refundService;
         this.distributedLockService = distributedLockService;
@@ -102,7 +99,7 @@ public class BookingService {
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
 
-         double refundAmount =  refundService.initiate(booking.getId());
+         double refundAmount =  refundService.initiate(booking);
 
         return new CancellationResponse(booking.getId(),refundAmount);
     }

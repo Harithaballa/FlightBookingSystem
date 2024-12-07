@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class RefundService {
 
-    BookingService bookingService;
-
     RefundRepository refundRepository;
 
     StripeService stripeService;
@@ -20,15 +18,13 @@ public class RefundService {
     PaymentService paymentService;
 
     @Autowired
-    public RefundService(BookingService bookingService, RefundRepository refundRepository,StripeService stripeService,PaymentService paymentService){
-        this.bookingService = bookingService;
+    public RefundService( RefundRepository refundRepository,StripeService stripeService,PaymentService paymentService){
         this.refundRepository = refundRepository;
         this.stripeService = stripeService;
         this.paymentService = paymentService;
     }
 
-    public double calculate(RefundRequest request) throws Exception {
-        Booking booking = bookingService.findById(request.getBookingId());
+    public double calculate(Booking booking) throws Exception {
         long hoursBeforeDeparture = java.time.Duration.between(
                 java.time.LocalDateTime.now(), booking.getTrip().getDepartureTime()).toHours();
 
@@ -44,12 +40,12 @@ public class RefundService {
         }
     }
 
-    public double initiate(long bookingId) throws Exception {
-        double refundAmount = calculate(new RefundRequest(bookingId));
+    public double initiate(Booking booking) throws Exception {
+        double refundAmount = calculate(booking);
 
         Refund refund = new Refund();
         refund.setAmount(refundAmount);
-        refund.setBookingId(bookingId);
+        refund.setBookingId(booking.getId());
         refund.setStatus(RefundStatus.INITIATED);
 
         refundRepository.save(refund);

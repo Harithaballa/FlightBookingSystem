@@ -16,13 +16,9 @@ public class SeatService {
 
     SeatRepository seatRepository;
 
-    TripService tripService;
-
-
     @Autowired
-    public SeatService(SeatRepository seatRepository,TripService tripService){
+    public SeatService(SeatRepository seatRepository){
         this.seatRepository = seatRepository;
-        this.tripService = tripService;
     }
 
     public Seat add(CreateSeatDto seatDto) throws Exception {

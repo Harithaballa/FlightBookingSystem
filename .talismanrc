@@ -6,3 +6,9 @@ fileignoreconfig:
 - filename: src/main/java/com/example/FlightBookingSystem/Service/DistributedLockService.java
   checksum: eb3263307ef8f0e3c492b08d4934ede3cf5fbdb412c72c589c17f02ff9167d68
 version: ""
+fileignoreconfig:
+- filename: src/main/java/com/example/FlightBookingSystem/Controllers/BookingController.java
+  checksum: 97c82a21aff11992a4bfd4cab11beafa34076f2b82b4a32f7a20fb045a298c24
+- filename: src/main/resources/application.properties
+  checksum: 25116707eb7be9773da2d24a17958f96285c53ebcfcdb440f6e4487d5e7c354e
+version: ""

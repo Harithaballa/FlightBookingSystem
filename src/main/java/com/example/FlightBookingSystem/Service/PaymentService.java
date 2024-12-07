@@ -17,12 +17,9 @@ public class PaymentService {
 
     PaymentRepository paymentRepository;
 
-    UserService userService;
-
     @Autowired
-    public PaymentService(PaymentRepository paymentRepository, UserService userService){
+    public PaymentService(PaymentRepository paymentRepository){
         this.paymentRepository = paymentRepository;
-        this.userService = userService;
     }
 
     @Transactional

@@ -16,6 +16,6 @@ public interface SeatRepository extends JpaRepository<Seat,Long> {
     @Query("SELECT s.status from Seat s where s.id = :seat_id")
     boolean findStatus(@Param("seat_id") long seat_id);
 
-    @Query("SELECT s from Seat s where s.trip_id = :trip_id and s.id in :selectedSeats and s.status = 0")
+    @Query("SELECT s from Seat s where s.trip = (select t from Trip t where t.id=:trip_id) and s.id in :selectedSeats and s.status = 0")
     List<Seat> findAvailableSeats(@Param("trip_id") long trip_id,@Param("selectedSeats") List<Long> selectedSeats);
 }

@@ -24,6 +24,6 @@ public class User {
     @Column(name="email")
     String email;
 
-    @OneToMany(mappedBy = "paid_by", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "paidBy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Payment> payments;
 }

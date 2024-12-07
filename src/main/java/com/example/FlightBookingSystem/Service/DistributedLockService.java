@@ -11,10 +11,12 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class DistributedLockService {
 
-    @Autowired
-    private RedissonClient redissonClient;
-
+    private final RedissonClient redissonClient;
     private static final int LOCK_TIMEOUT_MINUTE = 15;
+
+    public DistributedLockService(RedissonClient redissonClient){
+        this.redissonClient = redissonClient;
+    }
 
     public boolean tryLockSeats(long tripId, List<Long> selectedSeats) {
         for(long seat:selectedSeats){
